@@ -1,0 +1,202 @@
+---
+title: "Quarto_hwk_2_rzb5742"
+author: "YOUR NAME"
+format: html
+self-contained: true
+editor: visual
+---
+
+```{r}
+#| warning: false
+
+# Load libraries
+library(Stat2Data)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+#| echo: false
+
+myFunction <- function(x) {
+  y <- (cos(4 * x) + tan(0.5 * x))^4
+  return(y)
+}
+
+library(ggplot2)
+
+ggplot() +
+  stat_function(
+    fun = myFunction,
+    xlim = c(0, 1),
+    n = 1000
+  ) +
+  theme_bw() +
+  labs(
+    x = "x",
+    y = "h(x)"
+  )
+
+
+```
+
+---
+
+
+---
+
+```{}
+```
+
+## **Question 2 - Code from in class activity on 15th Nov, 2024.**
+
+```{r}
+
+
+
+data(Election08)
+Election08$ObamaWin <- as.factor(Election08$ObamaWin)
+
+ggplot(Election08, 
+       aes(x = BA, y = Income, 
+           color = ObamaWin)) +
+  geom_point() +
+  labs(
+    title = "Scatter Plot of College Degree vs Income",
+    x = "Percent with at least a college education",
+    y = "Per capita income (in dollars)",
+    color = "Obama wins state in 2008"
+  )
+
+
+
+```
+
+```{r}
+
+
+# read in the data file 
+tortilla_data <- read.csv("/Users/rohanbadami/Downloads/tortilla_data.csv")
+
+# inspect data
+head(tortilla_data)
+
+
+```
+
+# Task (a) 
+
+```{r}
+
+# filtering data for the year 2007 and calculating the avg price. 
+
+avg_price_2007 <- tortilla_data %>%
+  filter(year == 2007) %>%
+  summarize(avg_price = mean(price, na.rm = TRUE))
+
+# Display the result
+avg_price_2007
+```
+
+# Task (b) 
+
+```{r}
+
+# filter for the year 2024, then calculate the average price
+avg_price_2024 <- tortilla_data %>%
+  filter(year == 2024) %>%
+  summarize(avg_price = mean(price, na.rm = TRUE))
+
+# 
+avg_price_2024
+```
+
+# Task (c) 
+
+```{r}
+# calculating percent change between 2007 and 2024. 
+
+
+percent_change <- ((avg_price_2024$avg_price - avg_price_2007$avg_price) / avg_price_2007$avg_price) * 100
+
+percent_change
+```
+
+# Task (d) 
+
+```{r}
+
+
+# calculate the average yearly prices
+yearly_avg_prices <- tortilla_data %>%
+  group_by(year) %>%
+  summarize(avg_price = mean(price, na.rm = TRUE))
+
+# plot yearly average prices
+ggplot(yearly_avg_prices, aes(x = year, y = avg_price)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "average tortilla price between 2007-24",
+    x = "year",
+    y = "average price"
+  )
+```
+
+## **Task (e) - summary and box plots for 2016**
+
+```{r}
+#filtering for 2016 data to calculate the summary statistcis 
+
+stats_2016 <- tortilla_data %>%
+  filter(year == 2016) %>%
+  group_by(state) %>%
+  summarize(
+    avg_price = mean(price, na.rm = TRUE),
+    min_price = min(price, na.rm = TRUE),
+    max_price = max(price, na.rm = TRUE),
+    median_price = median(price, na.rm = TRUE),
+    sd_price = sd(price, na.rm = TRUE)
+  )
+
+# display
+stats_2016
+
+
+# boxplots for 2016 
+ggplot(tortilla_data %>% filter(year == 2016), aes(x = state, y = price)) +
+  geom_boxplot() +
+  labs(
+    title = "tortilla prices by date (year 2016)",
+    caption = "source: tortilla_data.csv by Rohan Badami",
+    x = "State",
+    y = "Price"
+  )
+```
+
+# Task (f) 
+
+```{r}
+
+
+# filtering data for nuevo leon by storetype ie small vs large businesses between 2007 - 2024
+
+nuevo_leon_data <- tortilla_data %>%
+  filter(state == "NuevoLeon")
+
+# Plot tortilla prices for Nuevo León by store type
+ggplot(nuevo_leon_data, aes(x = year, y = price, color = storeType)) +
+  geom_line() +
+  labs(
+    title = "tortilla prices in Nuevo León by store type (2007-2024)",
+    caption = "store type is either small or large businesses",
+    x = "Year",
+    y = "Price"
+  )
+```
+
+![Wikipedia contributors. “Tortilla.” Wikipedia, The Free Encyclopedia, 18 Nov. 2024, https://en.wikipedia.org/wiki/Tortilla. Accessed 18 Nov. 2024](Desktop/Mexican_tortilla.jpg)
+
+## **Task (h) - (included footnote on heading)**[^1]
+
+[^1]: Rick Chavelas via Kaggle at https://www.kaggle.com/datasets/richave/tortilla-prices-in-mexico[↩︎](https://inst-fs-iad-prod.inscloudgate.net/files/71c0b008-4487-4caa-a94d-d2cdefa27000/quarto_hwk.html?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzE5NTE2NTAsInVzZXJfaWQiOiIxMDUwMDAwMDAwNzE0MjE1MSIsInJlc291cmNlIjoiL2ZpbGVzLzcxYzBiMDA4LTQ0ODctNGNhYS1hOTRkLWQyY2RlZmEyNzAwMC9xdWFydG9faHdrLmh0bWwiLCJqdGkiOiIzZGMwYzk5Yy00YzY5LTRhYzQtYWViZS0xODU3MjAyOGJjODkiLCJob3N0IjoicHN1Lmluc3RydWN0dXJlLmNvbSIsIm9yaWdpbmFsX3VybCI6Imh0dHBzOi8vYTEwNTAtMTcwMzA4MDYwLmNsdXN0ZXI1Mi5jYW52YXMtdXNlci1jb250ZW50LmNvbS9jb3Vyc2VzLzEwNTB-MjM1MDAxNy9maWxlcy8xMDUwfjE3MDMwODA2MC9jb3Vyc2UlMjBmaWxlcy9VcGxvYWRlZCUyME1lZGlhL3F1YXJ0b19od2suaHRtbD9jb250ZXh0X2lkPTEwNTB-MjM1MDAxN1x1MDAyNmNvbnRleHRfdHlwZT1Db3Vyc2VcdTAwMjZkb3dubG9hZD0xXHUwMDI2aWQ9MTA1MDAwMDAxNzAzMDgwNjBcdTAwMjZpbmxpbmU9MVx1MDAyNm5vX2NhY2hlPXRydWVcdTAwMjZyZWRpcmVjdD10cnVlIiwiZXhwIjoxNzMyMDM4MDUwfQ.acoDjcNq2oF3P5t-tCr_tOSyrVixcNtYA5UEwBGknyyZB3NeEKF0hsVmKPtrMguFTFjEcd-0nb-cN8Vhp2DTMg#fnref1)
