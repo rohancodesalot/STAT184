@@ -1,6 +1,6 @@
 ---
 title: "Quarto_hwk_2_rzb5742"
-author: "YOUR NAME"
+author: "Rohan Badami"
 format: html
 self-contained: true
 editor: visual
@@ -40,12 +40,11 @@ ggplot() +
 
 ```
 
----
+------------------------------------------------------------------------
 
+------------------------------------------------------------------------
 
----
-
-```{}
+```         
 ```
 
 ## **Question 2 - Code from in class activity on 15th Nov, 2024.**
@@ -84,7 +83,7 @@ head(tortilla_data)
 
 ```
 
-# Task (a) 
+# Task (a)
 
 ```{r}
 
@@ -98,7 +97,7 @@ avg_price_2007 <- tortilla_data %>%
 avg_price_2007
 ```
 
-# Task (b) 
+# Task (b)
 
 ```{r}
 
@@ -111,7 +110,7 @@ avg_price_2024 <- tortilla_data %>%
 avg_price_2024
 ```
 
-# Task (c) 
+# Task (c)
 
 ```{r}
 # calculating percent change between 2007 and 2024. 
@@ -122,7 +121,7 @@ percent_change <- ((avg_price_2024$avg_price - avg_price_2007$avg_price) / avg_p
 percent_change
 ```
 
-# Task (d) 
+# Task (d)
 
 ```{r}
 
@@ -174,7 +173,7 @@ ggplot(tortilla_data %>% filter(year == 2016), aes(x = state, y = price)) +
   )
 ```
 
-# Task (f) 
+# Task (f)
 
 ```{r}
 
